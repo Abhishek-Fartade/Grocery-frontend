@@ -14,19 +14,21 @@ const ProductDetails = () => {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetchProduct();
-  }, [id]);
-
   const fetchProduct = async () => {
     try {
       const response = await api.get(`/products/${id}`);
       setProduct(response.data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching product:', error);
+      console.error("Error fetching product:", error);
       setLoading(false);
     }
   };
+
+  fetchProduct();
+}, [id]);
+
+
 
   const handleAddToCart = () => {
     if (product.quantity >= quantity) {

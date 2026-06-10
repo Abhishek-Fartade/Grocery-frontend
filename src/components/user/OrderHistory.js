@@ -9,13 +9,13 @@ const OrderHistory = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
-  useEffect(() => {
-    fetchOrders();
-    
-    if (location.state?.orderPlaced) {
-      alert('Order placed successfully!');
-    }
-  }, []);
+ useEffect(() => {
+  fetchOrders();
+
+  if (location.state?.orderPlaced) {
+    alert('Order placed successfully!');
+  }
+}, [location.state?.orderPlaced]);
 
   const fetchOrders = async () => {
     try {
