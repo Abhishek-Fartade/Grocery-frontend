@@ -9,14 +9,7 @@ const OrderHistory = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
- useEffect(() => {
-  fetchOrders();
-
-  if (location.state?.orderPlaced) {
-    alert('Order placed successfully!');
-  }
-}, [location.state?.orderPlaced]);
-
+useEffect(() => {
   const fetchOrders = async () => {
     try {
       const response = await api.get('/user/orders');
@@ -27,6 +20,13 @@ const OrderHistory = () => {
       setLoading(false);
     }
   };
+
+  fetchOrders();
+
+  if (location.state?.orderPlaced) {
+    alert('Order placed successfully!');
+  }
+}, [location.state?.orderPlaced]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
