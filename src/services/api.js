@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'https://grocery-backend-production-f5ab.up.railway.app';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
