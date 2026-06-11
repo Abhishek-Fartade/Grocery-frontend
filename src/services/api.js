@@ -1,11 +1,9 @@
-import axios from 'axios';
-
-const API_BASE_URL = 'https://grocery-backend-production-f5ab.up.railway.app';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: "https://grocery-backend-production-f5ab.up.railway.app",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 

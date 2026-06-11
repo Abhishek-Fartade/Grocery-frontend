@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    
+
     if (storedUser && token) {
       try {
         setUser(JSON.parse(storedUser));
@@ -27,56 +27,80 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('token');
       }
     }
+
     setLoading(false);
   }, []);
 
   const login = async (email, password, isAdmin = false) => {
     try {
-const response = await api.post('/api/auth/register', {
-  name,
-  email,
-  password
-});
+      const response = await api.post('/api/auth/login', {
+        email,
+        password,
+      });
+
       const { token, id, name, email: userEmail, role } = response.data;
-      
-      // Check role match
+
       if (isAdmin && role !== 'ADMIN') {
         throw new Error('Access denied. Admin role required.');
       }
+
       if (!isAdmin && role !== 'USER') {
         throw new Error('Access denied. User role required.');
       }
-      
+
+      const userData = {
+        id,
+        name,
+        email: userEmail,
+        role,
+      };
+
       localStorage.setItem('token', token);
-      const userData = { id, name, email: userEmail, role };
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
-      
+
       return { success: true };
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.error || error.message || 'Login failed',
+        error:
+          error.response?.data?.error ||
+          error.message ||
+          'Login failed',
       };
     }
   };
 
   const register = async (name, email, password) => {
     try {
-      const response = await api.post('/auth/register', { name, email, password });
-      
-      const { token, id, name: userName, email: userEmail, role } = response.data;
-      
+      const response = await api.post('/api/auth/register', {
+        name,
+        email,
+        password,
+      });
+
+      const { token, id, name: userName, email: userEmail, role } =
+        response.data;
+
+      const userData = {
+        id,
+        name: userName,
+        email: userEmail,
+        role,
+      };
+
       localStorage.setItem('token', token);
-      const userData = { id, name: userName, email: userEmail, role };
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
-      
+
       return { success: true };
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.error || error.message || 'Registration failed',
+        error:
+          error.response?.data?.error ||
+          error.message ||
+          'Registration failed',
       };
     }
   };
@@ -88,7 +112,15 @@ const response = await api.post('/api/auth/register', {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        register,
+        logout,
+        loading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
