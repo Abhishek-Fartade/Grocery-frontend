@@ -40,13 +40,13 @@ export const AuthProvider = ({ children }) => {
 
       const { token, id, name, email: userEmail, role } = response.data;
 
-      if (isAdmin && role !== 'ADMIN') {
-        throw new Error('Access denied. Admin role required.');
-      }
+      // if (isAdmin && role !== 'ADMIN') {
+      //   throw new Error('Access denied. Admin role required.');
+      // }
 
-      if (!isAdmin && role !== 'USER') {
-        throw new Error('Access denied. User role required.');
-      }
+      // if (!isAdmin && role !== 'USER') {
+      //   throw new Error('Access denied. User role required.');
+      // }
 
       const userData = {
         id,
