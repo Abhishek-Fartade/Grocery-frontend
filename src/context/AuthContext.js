@@ -32,9 +32,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, isAdmin = false) => {
     try {
-     const endpoint = '/api/auth/login';
-      const response = await api.post('/api/auth/register', { name, email, password });
-      
+const response = await api.post('/api/auth/register', {
+  name,
+  email,
+  password
+});
       const { token, id, name, email: userEmail, role } = response.data;
       
       // Check role match
