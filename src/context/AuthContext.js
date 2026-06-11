@@ -32,8 +32,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, isAdmin = false) => {
     try {
-      const endpoint = isAdmin ? '/auth/login' : '/auth/login';
-      const response = await api.post(endpoint, { email, password });
+     const endpoint = '/api/auth/login';
+      const response = await api.post('/api/auth/register', { name, email, password });
       
       const { token, id, name, email: userEmail, role } = response.data;
       
