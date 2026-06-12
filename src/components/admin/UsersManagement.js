@@ -12,12 +12,12 @@ const UsersManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await api.get('/admin/users');
+      const response = await api.get('/api/admin/users');
       setUsers(response.data);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching users:', error);
-      alert('Error fetching users');
+      alert(error.response?.data?.error || 'Error fetching users');
+    } finally {
       setLoading(false);
     }
   };
@@ -42,24 +42,32 @@ const UsersManagement = () => {
               <th>Role</th>
             </tr>
           </thead>
+
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>
-                  <span className={`role-badge ${user.role.toLowerCase()}`}>
-                    {user.role}
-                  </span>
-                </td>
+            {users.length > 0 ? (
+              users.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    <span
+                      className={`role-badge ${
+                        user.role ? user.role.toLowerCase() : ''
+                      }`}
+                    >
+                      {user.role}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4">No users found</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
-        {users.length === 0 && (
-          <p className="no-data">No users found</p>
-        )}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
    baseURL: "https://grocery-backend-production-f5ab.up.railway.app",
-  baseURL: "localhost:8080/",
+  
   headers: {
     "Content-Type": "application/json",
   },

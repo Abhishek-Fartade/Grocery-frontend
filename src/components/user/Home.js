@@ -28,7 +28,7 @@ const Home = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await api.get('/products');
+      const response = await api.get('/api/products');
       setProducts(response.data);
       setLoading(false);
     } catch (error) {
@@ -39,7 +39,7 @@ const Home = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await api.get('/categories');
+      const response = await api.get('/api/categories');
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -48,7 +48,7 @@ const Home = () => {
 
   const fetchProductsByCategory = async (categoryId) => {
     try {
-      const response = await api.get(`/products/category/${categoryId}`);
+      const response = await api.get(`/api/products/category/${categoryId}`);
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products by category:', error);

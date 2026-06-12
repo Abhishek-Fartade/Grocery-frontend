@@ -30,7 +30,7 @@ const ProductsManagement = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await api.get('/products');
+      const response = await api.get('/api/products');
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -50,9 +50,10 @@ const ProductsManagement = () => {
       };
 
       if (editingProduct) {
-        await api.put(`/admin/products/${editingProduct.id}`, productData);
+       await api.put(`/api/admin/products/${editingProduct.id}`, productData);
       } else {
-        await api.post('/admin/products', productData);
+        
+        await api.post('/api/admin/products', productData);
       }
 
       setShowModal(false);
@@ -89,7 +90,8 @@ const ProductsManagement = () => {
       return;
     }
     try {
-      await api.delete(`/admin/products/${id}`);
+     
+await api.delete(`/api/admin/products/${id}`);
       fetchProducts();
     } catch (error) {
       alert(error.response?.data?.error || 'Error deleting product');

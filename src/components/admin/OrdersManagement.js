@@ -12,19 +12,19 @@ const OrdersManagement = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await api.get('/admin/orders');
+      const response = await api.get('/api/admin/orders');
       setOrders(response.data);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching orders:', error);
-      alert('Error fetching orders');
+      alert(error.response?.data?.error || 'Error fetching orders');
+    } finally {
       setLoading(false);
     }
   };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString();
+    if (!dateString) return '-';
+    return new Date(dateString).toLocaleString();
   };
 
   if (loading) {
@@ -38,29 +38,54 @@ const OrdersManagement = () => {
       </div>
 
       <div className="orders-grid">
-        {orders.map((order) => (
-          <div key={order.id} className="order-card-admin">
-            <div className="order-card-header">
-              <div>
-                <h3>Order #{order.id}</h3>
-                <p className="order-user">Customer: {order.userName}</p>
-                <p className="order-date">{formatDate(order.orderDate)}</p>
-              </div>
-              <p className="order-total">${parseFloat(order.totalAmount).toFixed(2)}</p>
-            </div>
-            <div className="order-items-admin">
-              <h4>Items:</h4>
-              {order.orderItems.map((item) => (
-                <div key={item.id} className="order-item-admin">
-                  <span>{item.productName}</span>
-                  <span>Qty: {item.quantity} x ${parseFloat(item.price).toFixed(2)}</span>
-                  <span>${(parseFloat(item.price) * item.quantity).toFixed(2)}</span>
+        {orders.length > 0 ? (
+          orders.map((order) => (
+            <div key={order.id} className="order-card-admin">
+              <div className="order-card-header">
+                <div>
+                  <h3>Order #{order.id}</h3>
+                  <p className="order-user">
+                    Customer: {order.userName}
+                  </p>
+                  <p className="order-date">
+                    {formatDate(order.orderDate)}
+                  </p>
                 </div>
-              ))}
+
+                <p className="order-total">
+                  ₹{Number(order.totalAmount).toFixed(2)}
+                </p>
+              </div>
+
+              <div className="order-items-admin">
+                <h4>Items:</h4>
+
+                {order.orderItems &&
+                  order.orderItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="order-item-admin"
+                    >
+                      <span>{item.productName}</span>
+
+                      <span>
+                        Qty: {item.quantity} × ₹
+                        {Number(item.price).toFixed(2)}
+                      </span>
+
+                      <span>
+                        ₹
+                        {(
+                          Number(item.price) *
+                          item.quantity
+                        ).toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
+              </div>
             </div>
-          </div>
-        ))}
-        {orders.length === 0 && (
+          ))
+        ) : (
           <p className="no-data">No orders found</p>
         )}
       </div>
